@@ -1,0 +1,121 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.FontMetrics;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.FontFormatException;
+
+import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.Timer;
+
+import java.lang.*;
+
+import java.io.*;
+import java.io.InputStream;
+
+import java.util.*;
+import java.util.TimerTask;
+
+
+
+
+public class MinuteBudget
+extends JFrame
+implements ActionListener {
+    private int time = 10000;
+    public MinuteBudget() {
+        Timer clock = new Timer(1000, this);
+        setLayout(null);
+        setTitle("MinuteBudget");
+        setContentPane(new DrawPane());
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(true);
+        setVisible(true);
+        clock.start();
+    }
+
+    static class startPanel extends JFrame implements ActionListener {
+        JPanel mainframe;
+        Dimension size;
+        double panelHeight;
+        double panelWidth;
+        public startPanel() {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            double width = screenSize.getWidth();
+            double height = screenSize.getHeight();
+            JLabel text = new JLabel("What are you gonna do now?");
+            JButton jb = new JButton();
+            JTextField link = new JTextField(20);
+            mainframe = new JPanel();
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            jb.setText("Start task!");
+            jb.setHorizontalAlignment(JButton.CENTER);
+            jb.addActionListener(start);
+            mainframe.add(text);
+            mainframe.add(link);
+            mainframe.add(jb);
+            getContentPane().add(mainframe);
+            pack();
+            setVisible(true);
+            checkSize();
+            setBounds((int)(width/2)-(int)(panelWidth/2),(int)(height/2)-(int)(panelHeight/2), (int)panelWidth, 100);
+
+        }
+        public void actionPerformed(ActionEvent start) {
+
+        }
+        public void checkSize(){
+            size = getContentPane().getSize();
+            panelHeight = size.getHeight();
+            panelWidth = size.getWidth();
+            System.out.print("Width"+panelWidth+"Height"+ panelHeight);
+        }
+        class DrawPane extends JPanel {
+            public void paintComponent(Graphics g) {
+
+            }
+        }
+    }
+
+    class DrawPane extends JPanel {
+        public void paintComponent(Graphics g) {
+            Font font = null;
+            Dimension screenSize = this.getBounds().getSize();
+            double width = screenSize.getWidth();
+            double height = screenSize.getHeight();
+            try {
+                font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 36);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            g.setFont(font);
+            FontMetrics fontMetrics = g.getFontMetrics(font);
+            String printString = "You have " + Integer.toString(time) + " minutes left!";
+            int timeLength = fontMetrics.stringWidth(printString);
+            int timeHeight = fontMetrics.getHeight();
+            Color mainText = new Color(255, 255, 255, 255);
+            super.paintComponent(g);
+            setBackground(Color.WHITE);
+            g.setColor(Color.BLACK);
+            g.drawString(printString, (int)((width / 2) - (timeLength / 2)), (int)((height / 2) - (timeHeight / 2)));
+        }
+    }
+
+
+    public void actionPerformed(ActionEvent e) {
+        time--;
+        repaint();
+    }
+
+
+    public static void main(String[] args) {
+        new startPanel();
+
+    }
+
+}
