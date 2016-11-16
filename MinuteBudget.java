@@ -1,3 +1,4 @@
+//written by GKGKGKGK
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionListener;
@@ -33,6 +34,14 @@ implements ActionListener {
     private static String userTask = "temp!";
     private static int finalTime = 0;
     private static int seconds = 0;
+    private static int stand = 8*60;
+    private static int sit = 20*60;
+    private static int move = 2*60;
+    private static String postureString = "";
+    private static Font font = null;
+    private static Font font2 = null;
+    private static Font font3 = null;
+    private static Font font4 = null;
     public MinuteBudget() {
         Timer clock = new Timer(1000, this);
         setLayout(null);
@@ -56,7 +65,8 @@ implements ActionListener {
         "find the highest prime number!", "do my homework!", "find a new element!",
       "invent something!"
       };
-        private String[] minutes = {"1","5","10","15","20","25","30","35","40","45","50","55","60"};
+        private String[] minutes = {"5","10","15","20","25","30","35","40","45","50","55","60", "75","90","105", "120"};
+
         JComboBox minutesComboBox = new JComboBox(minutes);
         public startPanel() {
 
@@ -117,27 +127,21 @@ implements ActionListener {
 
     class DrawPane extends JPanel {
         public void paintComponent(Graphics g) {
-            Font font = null;
-            Font font2 = null;
             Dimension screenSize = this.getBounds().getSize();
             double width = screenSize.getWidth();
             double height = screenSize.getHeight();
-            try {
-                font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 36);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            try {
-                font2 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.ITALIC, 12);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            makeFonts();
             g.setFont(font);
             FontMetrics fontMetrics = g.getFontMetrics(font);
+            FontMetrics fontMetrics2 = g.getFontMetrics(font2);
+            FontMetrics fontMetrics3 = g.getFontMetrics(font3);
+            FontMetrics fontMetrics4 = g.getFontMetrics(font4);
             String printString = "You have " + Integer.toString(finalTime) + " minutes left!";
             String printStringSeconds = "and " + seconds + " seconds";
             int timeLength = fontMetrics.stringWidth(printString);
             int timeHeight = fontMetrics.getHeight();
+            int universalLength = fontMetrics.stringWidth(printString);
+            int universalHeight = fontMetrics.getHeight();
             Color mainText = new Color(255, 255, 255, 255);
             super.paintComponent(g);
             setBackground(Color.WHITE);
@@ -145,12 +149,39 @@ implements ActionListener {
             g.drawString(printString, (int)((width / 2) - (timeLength / 2)), (int)((height / 2) - (timeHeight / 2)));
             g.setFont(font2);
             g.drawString(printStringSeconds, (int)((width / 2) - (timeLength / 2)), (int)((height / 2) - (timeHeight / 2))+50);
+            g.setFont(font3);
+            universalLength = fontMetrics3.stringWidth(postureString);
+            universalHeight = fontMetrics3.getHeight();
+            g.drawString(postureString, 0,(int)(height-(universalHeight)));
+            g.setFont(font4);
+            universalLength = fontMetrics4.stringWidth(userTask);
+            universalHeight = fontMetrics4.getHeight();
+            g.drawString(userTask, (int)((width / 2) - (universalLength / 2)), 0+ (universalHeight));
         }
     }
 
 
     public void actionPerformed(ActionEvent e) {
         time--;
+        
+        if(sit>0){
+        sit -=1;
+        postureString = "Sit down! Relax...";
+        }
+        else if (sit <=0 && stand >0){
+        stand -=1;
+        postureString = "Why don't you work standing up for a bit!";
+        }
+        else if(sit <=0 && stand<=0 && move >0) {
+        postureString = "Take a walk around the room! Stretch!";
+        move-=1;
+        }
+        else{
+        sit = 20*60;
+        stand = 8*60;
+        move = 2*60;
+        }
+      
       if(time > 60){
       finalTime = time/60;
       if(seconds >0){
@@ -166,6 +197,30 @@ implements ActionListener {
         repaint();
     }
 
+    public void makeFonts(){
+          try {
+                font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 36);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            try {
+                font2 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.ITALIC, 12);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+             try {
+                font3 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 24);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+             try {
+                font4 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 48);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            
+            
+    }
 
     public static void main(String[] args) {
         new startPanel();
