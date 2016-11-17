@@ -1,0 +1,8 @@
+public class beginPanel extends JPanel implements ActionListener{
+
+  public beginPanel(){
+  
+  }
+
+
+}

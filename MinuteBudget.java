@@ -29,9 +29,10 @@ import java.util.Random;
 public class MinuteBudget
 extends JFrame
 implements ActionListener {
+public static int current = 0;
     public static int time = 10000;
     public static int timeMinutes = 1000;
-    public static String userTask = "temp!";
+    public static String userTask[] = new String[SetupPanel.amount];
     public static int finalTime = 0;
     public static int seconds = 0;
     private static int stand = 8*60;
@@ -54,7 +55,7 @@ implements ActionListener {
         clock.start();
     }
 
-
+ 
     class DrawPane extends JPanel {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -89,9 +90,9 @@ implements ActionListener {
             g.drawString(postureString, 0,(int)(height-(universalHeight)));
 
             g.setFont(font4);
-            universalLength = fontMetrics4.stringWidth(userTask);
+            universalLength = fontMetrics4.stringWidth(userTask[current]);
             universalHeight = fontMetrics4.getHeight();
-            g.drawString(userTask, (int)((width / 2) - (universalLength / 2)), 0+ (universalHeight));
+            g.drawString(userTask[current], (int)((width / 2) - (universalLength / 2)), 0+ (universalHeight));
 
         }
     }
@@ -159,8 +160,8 @@ implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new SetupPanel();
+      
+        beginPanel beginPanel = new beginPanel();
 
-    }
-
+}
 }

@@ -1,0 +1,7 @@
+public class taskPanel extends JPanel {
+
+  public taskPanel(){
+  
+  }
+  
+}
