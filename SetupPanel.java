@@ -26,6 +26,7 @@ import java.util.Random;
 
 public class SetupPanel extends JPanel implements ActionListener {
     public static int amount = 1;
+        public static int finalAmount;
     JFrame window;
     JPanel mainframe;
     Dimension size;
@@ -42,9 +43,10 @@ public class SetupPanel extends JPanel implements ActionListener {
         "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60", "75", "90", "105", "120"
     };
     JComboBox < String > minutesComboBox = new JComboBox < String > (minutes);
-
+JComboBox [] minuteCB;
     public SetupPanel(int amount) {
-      JComboBox [] minuteCB = new JComboBox[amount];
+      finalAmount = amount;
+      minuteCB = new JComboBox[amount];
       for(int m = 0; m < amount; m++){
       minuteCB[m] =  new JComboBox < String > (minutes);
       }
@@ -80,6 +82,7 @@ public class SetupPanel extends JPanel implements ActionListener {
         jb.setHorizontalAlignment(JButton.CENTER);
         jb.addActionListener(this);
         window.getContentPane().add(this);
+        add(jb);
         //window.getContentPane().add(mainframe);
         window.pack();
         window.setVisible(true);
@@ -88,14 +91,15 @@ public class SetupPanel extends JPanel implements ActionListener {
 
     }
     public void actionPerformed(ActionEvent start) {
-        new MinuteBudget();
-        for(int i = 0; i < amount; i++){
-        MinuteBudget.userTask[i] = link[i].getText().toString();
+        int[] minutes = new int[finalAmount];
+        String[] tasks = new String[finalAmount];
+        for (int i = 0; i< finalAmount; i++){
+        minutes[i] = Integer.parseInt(minuteCB[i].getSelectedItem().toString());
+        tasks[i] = link[i].getText();
+
         }
-        MinuteBudget.time = 60 * (Integer.parseInt(minutesComboBox.getSelectedItem().toString())); //amount of seconds
-        MinuteBudget.timeMinutes = Integer.parseInt(minutesComboBox.getSelectedItem().toString()); //amount of minutes
-        MinuteBudget.finalTime = MinuteBudget.time / 60;
-        MinuteBudget.seconds = 60;
+                System.out.println("array amt: "+finalAmount);
+        new MinuteBudget(tasks, minutes);
         setVisible(false);
         window.dispose();
     }
@@ -103,7 +107,6 @@ public class SetupPanel extends JPanel implements ActionListener {
         size = window.getContentPane().getSize();
         panelHeight = size.getHeight();
         panelWidth = size.getWidth();
-        System.out.print("Width" + panelWidth + "Height" + panelHeight);
     }
     public void selectHint() {
         Random newRandom = new Random();
