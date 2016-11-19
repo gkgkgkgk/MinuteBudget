@@ -45,10 +45,11 @@ implements ActionListener {
     public static JFrame window;
     public MinuteBudget(String[] userTask, int[] timeMinutes) {
       window = new JFrame();
-      setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+      setLayout(new GridBagLayout());
+
       setBackground(Color.RED);
       timeMinutesFinal =  timeMinutes;
-        Timer clock = new Timer(1000, this);
+      Timer clock = new Timer(1000, this);
         window.setTitle("MinuteBudget");
        window.setSize(800, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,8 +60,13 @@ implements ActionListener {
         System.out.print("Length: "+userTask.length);
         System.out.print(timeMinutes[0]);
         JLabel mainTime = new JLabel(String.valueOf(timeMinutes[current]));
+        JLabel taskLabel = new JLabel(String.valueOf(userTask[current]));
+        makeFonts();
+        mainTime.setFont(font);
+        taskLabel.setFont(font);
         mainTime.setHorizontalAlignment(JLabel.CENTER);
         add(mainTime);
+        add(taskLabel);
     }
 
     public void actionPerformed(ActionEvent e) {

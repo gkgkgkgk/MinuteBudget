@@ -10,6 +10,7 @@ import java.awt.FontFormatException;
 
 import javax.swing.*;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.JComboBox;
@@ -27,12 +28,12 @@ import java.util.Random;
 
 
 public class MinuteBudget
-extends JFrame
+extends JPanel
 implements ActionListener {
-public static int current = 0;
+    public static int current = 0;
     public static int time = 10000;
-    //public static int[] timeMinutes = new int[SetupPanel.amount];
-    //public static String userTask[] = new String[SetupPanel.amount];
+    public static int[] timeMinutesFinal;
+    public static String[] userTaskFinal;
     private static int stand = 8*60;
     private static int sit = 20*60;
     private static int move = 2*60;
@@ -41,22 +42,33 @@ public static int current = 0;
     private static Font font2 = null;
     private static Font font3 = null;
     private static Font font4 = null;
+    public static JFrame window;
     public MinuteBudget(String[] userTask, int[] timeMinutes) {
+      window = new JFrame();
+      setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+      setBackground(Color.RED);
+      timeMinutesFinal =  timeMinutes;
         Timer clock = new Timer(1000, this);
-        setLayout(null);
-        setTitle("MinuteBudget");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(true);
-        setVisible(true);
+        window.setTitle("MinuteBudget");
+       window.setSize(800, 600);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(true);
+        window.setVisible(true);
+        window.getContentPane().add(this);
         clock.start();
-      System.out.print("Length: "+userTask.length);
+        System.out.print("Length: "+userTask.length);
         System.out.print(timeMinutes[0]);
+        JLabel mainTime = new JLabel(String.valueOf(timeMinutes[current]));
+        mainTime.setHorizontalAlignment(JLabel.CENTER);
+        add(mainTime);
     }
 
     public void actionPerformed(ActionEvent e) {
         time--;
-       repaint();
+        if(timeMinutesFinal[current]>0){
+        timeMinutesFinal[current] -=1;
+        }
+        repaint();
     }
 
     public void makeFonts(){
@@ -85,8 +97,6 @@ public static int current = 0;
     }
 
     public static void main(String[] args) {
-      
         beginPanel beginPanel = new beginPanel();
-
 }
 }

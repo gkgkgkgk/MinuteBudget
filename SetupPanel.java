@@ -37,7 +37,7 @@ public class SetupPanel extends JPanel implements ActionListener {
     private String[] task = {
         "conquer the world!", "build a rocket!",
         "find the highest prime number!", "do my homework!", "find a new element!",
-        "invent something!"
+        "invent something!", "eat lunch?", "stretch!", "study for an exam!", "learn to code..."
     };
     private String[] minutes = {
         "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60", "75", "90", "105", "120"

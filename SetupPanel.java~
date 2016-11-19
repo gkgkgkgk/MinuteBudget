@@ -26,6 +26,7 @@ import java.util.Random;
 
 public class SetupPanel extends JPanel implements ActionListener {
     public static int amount = 1;
+        public static int finalAmount;
     JFrame window;
     JPanel mainframe;
     Dimension size;
@@ -44,6 +45,7 @@ public class SetupPanel extends JPanel implements ActionListener {
     JComboBox < String > minutesComboBox = new JComboBox < String > (minutes);
 JComboBox [] minuteCB;
     public SetupPanel(int amount) {
+      finalAmount = amount;
       minuteCB = new JComboBox[amount];
       for(int m = 0; m < amount; m++){
       minuteCB[m] =  new JComboBox < String > (minutes);
@@ -89,14 +91,14 @@ JComboBox [] minuteCB;
 
     }
     public void actionPerformed(ActionEvent start) {
-        int[] minutes = new int[amount];
-        String[] tasks = new String[amount];
-        for (int i = 0; i< amount; i++){
+        int[] minutes = new int[finalAmount];
+        String[] tasks = new String[finalAmount];
+        for (int i = 0; i< finalAmount; i++){
         minutes[i] = Integer.parseInt(minuteCB[i].getSelectedItem().toString());
         tasks[i] = link[i].getText();
 
         }
-                System.out.println("array amt: "+amount);
+                System.out.println("array amt: "+finalAmount);
         new MinuteBudget(tasks, minutes);
         setVisible(false);
         window.dispose();
