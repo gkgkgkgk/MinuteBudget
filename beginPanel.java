@@ -28,15 +28,21 @@ import java.util.Random;
 
 public class beginPanel extends JPanel implements ActionListener{
  JFrame window;
+ JButton begin, help;
+ String introString = "Hi, welcome to MinuteBudget. MinuteBudget helps budget your time to complete multiple tasks efficiently, quickly, and ergonomically.";
          private String[] taskamountArray = {"1","2","3","4","5","6","7","8","9","10"};
                  JComboBox<String> taskAmountBox = new JComboBox<String>(taskamountArray);
   public beginPanel(){
+          JLabel intro = new JLabel(introString);
    window = new JFrame();
-   JButton begin = new JButton();
+   begin = new JButton();
+      help = new JButton("What is this?");
    JLabel text = new JLabel("I am going to complete");
    JLabel text2 = new JLabel("tasks!");
     begin.setText("Set up your schedule!");
     begin.addActionListener(this);
+        help.addActionListener(this);
+    add(help);
     add(text);
     add(taskAmountBox);
         add(text2);
@@ -47,9 +53,25 @@ public class beginPanel extends JPanel implements ActionListener{
   }
 
 public void actionPerformed(ActionEvent start) {
-            System.out.println(taskAmountBox.getSelectedItem());
+  if(start.getSource() == begin){
+           System.out.println(taskAmountBox.getSelectedItem());
           SetupPanel newPanel = new SetupPanel(Integer.parseInt(taskAmountBox.getSelectedItem().toString()));
           setVisible(false); 
-          window.dispose();
+          window.dispose();}
+  else{
+  new whatIsMinuteBudget();
+  }
         }
+
+class whatIsMinuteBudget extends JFrame{
+  public whatIsMinuteBudget(){
+    JPanel one = new JPanel();
+    JLabel string = new JLabel(introString);
+    one.add(string);
+     pack();
+     setSize(800, 200);
+    getContentPane().add(one);
+    setVisible(true);
+  }
+}
 }

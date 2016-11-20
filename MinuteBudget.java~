@@ -7,6 +7,8 @@ import java.awt.FontMetrics;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.FontFormatException;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 
 import javax.swing.*;
 import javax.swing.JFrame;
@@ -34,69 +36,115 @@ implements ActionListener {
     public static int time = 10000;
     public static int[] timeMinutesFinal;
     public static String[] userTaskFinal;
-    private static int stand = 8*60;
-    private static int sit = 20*60;
-    private static int move = 2*60;
+    private static int stand = 8 * 60;
+    private static int sit = 20 * 60;
+    private static int move = 2 * 60;
+    public int currentSeconds;
     private static String postureString = "";
-    private static Font font = null;
-    private static Font font2 = null;
-    private static Font font3 = null;
-    private static Font font4 = null;
+    private static Font font, font2, font3, font4;
+    
     public static JFrame window;
+    
+    int secondsInMinute = 59;
+    JLabel seconds, taskLabel, mainTime, action;
+    
     public MinuteBudget(String[] userTask, int[] timeMinutes) {
-      window = new JFrame();
-      setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-      setBackground(Color.RED);
-      timeMinutesFinal =  timeMinutes;
+        window = new JFrame();
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        setBackground(Color.WHITE);
+        timeMinutesFinal = timeMinutes;
+        currentSeconds = timeMinutesFinal[current] * 60;
         Timer clock = new Timer(1000, this);
         window.setTitle("MinuteBudget");
-       window.setSize(800, 600);
+        window.setSize(800, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(true);
         window.setVisible(true);
         window.getContentPane().add(this);
         clock.start();
-        System.out.print("Length: "+userTask.length);
+        System.out.print("Length: " + userTask.length);
         System.out.print(timeMinutes[0]);
-        JLabel mainTime = new JLabel(String.valueOf(timeMinutes[current]));
-        mainTime.setHorizontalAlignment(JLabel.CENTER);
-        add(mainTime);
+        mainTime = new JLabel(String.valueOf((int)(currentSeconds / 60) - 1) + " minutes left");
+        taskLabel = new JLabel(String.valueOf(userTask[current]));
+        action = new JLabel("Sit down... Relax...");
+        seconds = new JLabel("60");
+        makeFonts();
+        mainTime.setFont(font4);
+        taskLabel.setFont(font);
+        action.setFont(font);
+        seconds.setFont(font2);
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.anchor = GridBagConstraints.NORTH;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.gridx = 2;
+        c.gridy = 0;
+        add(action, c);
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        c.gridheight = 1;
+        add(taskLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 3;
+        add(seconds, c);
+
+        c.gridx = 1;
+        c.gridy = 1;
+        add(mainTime, c);
+
     }
 
     public void actionPerformed(ActionEvent e) {
         time--;
-        if(timeMinutesFinal[current]>0){
-        timeMinutesFinal[current] -=1;
+        System.out.println(currentSeconds);
+        if (currentSeconds > 0) {
+            seconds.setText(String.valueOf(secondsInMinute));
+            currentSeconds -= 1;
+            secondsInMinute -= 1;
+            if (secondsInMinute < 0) {
+                secondsInMinute = 59;
+                mainTime.setText(String.valueOf((int)(currentSeconds / 60)) + " minutes left");
+            }
+        } else if (timeMinutesFinal.length < current) {
+            current += 1;
+        } else {
+            taskLabel.setText("You have finished! (Hopefully)");
+            //completed!
         }
         repaint();
     }
 
-    public void makeFonts(){
-          try {
-                font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 36);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            try {
-                font2 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.ITALIC, 12);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-             try {
-                font3 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 24);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-             try {
-                font4 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 48);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            
-            
+    public void makeFonts() {
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 36);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        try {
+            font2 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.ITALIC, 12);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        try {
+            font3 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 24);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        try {
+            font4 = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("CaviarDreams.ttf"))).deriveFont(Font.PLAIN, 48);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
     }
 
     public static void main(String[] args) {
         beginPanel beginPanel = new beginPanel();
-}
+    }
 }

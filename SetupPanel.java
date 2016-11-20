@@ -33,18 +33,20 @@ public class SetupPanel extends JPanel implements ActionListener {
     double panelHeight;
     double panelWidth;
     JTextField link[];
-    String selectedHint = "Temporary, declared below in the function 'selectHint' ";
+    String selectedHint = "Temporary Placeholder, declared below in the function 'selectHint' ";
     private String[] task = {
-        "conquer the world!", "build a rocket!",
-        "find the highest prime number!", "do my homework!", "find a new element!",
-        "invent something!", "eat lunch?", "stretch!", "study for an exam!", "learn to code..."
+        "do homework.", "write a report", "write a book", "build a rocket!",
+        "do my homework!", 
+        "invent something!", "eat lunch.", "stretch.", "study for an exam!", 
     };
     private String[] minutes = {
-        "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60", "75", "90", "105", "120"
+        "1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60", "75", "90", "105", "120"
     };
     JComboBox < String > minutesComboBox = new JComboBox < String > (minutes);
 JComboBox [] minuteCB;
     public SetupPanel(int amount) {
+      JLabel textOne = new JLabel("Which tasks will you complete?");
+
       finalAmount = amount;
       minuteCB = new JComboBox[amount];
       for(int m = 0; m < amount; m++){
@@ -53,6 +55,7 @@ JComboBox [] minuteCB;
       amount = amount;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         window = new JFrame();
+              add(textOne);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         link = new JTextField[amount];
         double width = screenSize.getWidth();
@@ -63,7 +66,7 @@ JComboBox [] minuteCB;
         }
         JLabel text2[] = new JLabel[amount];
           for(int k= 0; k < amount; k++){
-        text2[k] =  new JLabel("minutes, I am going to ");
+        text2[k] =  new JLabel("minute(s), I am going to ");
         }
 
         JButton jb = new JButton();
@@ -78,7 +81,7 @@ JComboBox [] minuteCB;
 
         }
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jb.setText("Start task!");
+        jb.setText("Start working!");
         jb.setHorizontalAlignment(JButton.CENTER);
         jb.addActionListener(this);
         window.getContentPane().add(this);
